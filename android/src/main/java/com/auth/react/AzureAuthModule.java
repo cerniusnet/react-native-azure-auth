@@ -52,10 +52,26 @@ public class AzureAuthModule extends ReactContextBaseJavaModule implements Lifec
         final Activity activity = getCurrentActivity();
 
         this.callback = callback;
+
         if (activity != null) {
-            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-            CustomTabsIntent customTabsIntent = builder.build();
-            customTabsIntent.launchUrl(activity, Uri.parse(url));
+            CustomTabsWrapper customTabs = new CustomTabsWrapper(
+                    activity,
+                    reactContext.getApplicationInfo().packageName
+            );
+            if (closeOnLoad) {
+                customTabs.openUrl(url, new Runnable() {
+                    @Override
+                    public void run() {
+                        Callback cb = AzureAuthModule.this.callback;
+                        if (cb != null) {
+                            cb.invoke();
+                            AzureAuthModule.this.callback = null;
+                        }
+                    }
+                });
+            } else {
+                customTabs.openUrl(url);
+            }
         } else {
             final Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
