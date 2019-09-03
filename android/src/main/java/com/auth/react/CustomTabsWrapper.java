@@ -78,7 +78,13 @@ public class CustomTabsWrapper {
                     }
                 }
         );
-        waitUntilClientIsSet();
+        while(client == null){
+            try{
+                Thread.sleep(25);
+            }catch(InterruptedException e){
+                
+            }
+        }
     }
 
     private void waitUntilClientIsSet() {
