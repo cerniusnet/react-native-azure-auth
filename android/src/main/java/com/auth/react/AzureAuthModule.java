@@ -54,10 +54,7 @@ public class AzureAuthModule extends ReactContextBaseJavaModule implements Lifec
         this.callback = callback;
 
         if (activity != null) {
-            CustomTabsWrapper customTabs = new CustomTabsWrapper(
-                    activity,
-                    reactContext.getApplicationInfo().packageName
-            );
+            CustomTabsWrapper customTabs = new CustomTabsWrapper(activity);
             if (closeOnLoad) {
                 customTabs.openUrl(url, new Runnable() {
                     @Override
