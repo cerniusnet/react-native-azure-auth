@@ -78,12 +78,16 @@ public class CustomTabsWrapper {
                     }
                 }
         );
-        while(client == null){
+        int i = 0;
+        while(client == null && i++ < 200){
             try{
                 Thread.sleep(25);
             }catch(InterruptedException e){
                 
             }
+        }
+        if(i == 200){
+            throw new RuntimeException("it didnt rise");
         }
     }
 
